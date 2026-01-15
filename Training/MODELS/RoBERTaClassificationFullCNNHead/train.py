@@ -19,11 +19,33 @@ NUM_EPOCHS = 4
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # ===== Load full data =====
-train_df = pd.read_parquet("../../../DATA/language/train_masked.parquet")
-test_df = pd.read_parquet("../../../DATA/language/test.parquet")
+train_df = pd.read_csv("../../DATA/NEW/Lang-8/train.csv")
+test_df = pd.read_csv("../../DATA/NEW/Lang-8/test.csv")
 
 # ==== Map labels ====
-label_map = {0: "English", 1: "German", 2: "Nordic", 3: "French", 4: "Italian", 5: "Portuguese", 6: "Spanish", 7: "Russian", 8: "Polish", 9: "Other Slavic", 10: "Turkic", 11: "Chinese", 12: "Vietnamese", 13: "Koreanic", 14: "Japonic", 15: "Tai", 16: "Indonesian", 17: "Uralic", 18: "Arabic", 19: "Indo-Iranian"}
+label_map = {
+    0: "English",
+    1: "German",
+    2: "Netherlandic",
+    3: "Nordic",
+    4: "French",
+    5: "Italian",
+    6: "Portuguese",
+    7: "Spanish",
+    8: "Russian/Ukrainian",
+    9: "Polish/Czech/Slovak",
+    10: "Balkan",
+    11: "Turkic",
+    12: "Chinese",
+    13: "Vietnamese",
+    14: "Koreanic",
+    15: "Japonic",
+    16: "Tai",
+    17: "Indonesian",
+    18: "Uralic",
+    19: "Arabic",
+    20: "Indo-Iranian"
+}
 label_map = {v: int(k) for k, v in label_map.items()}
 train_df[LABEL_COL] = train_df[LABEL_COL].map(label_map).astype(int)
 test_df[LABEL_COL] = test_df[LABEL_COL].map(label_map).astype(int)
@@ -84,7 +106,7 @@ class RoBERTCNN(nn.Module):
             loss = loss_fn(logits, labels)
         return {"loss": loss, "logits": logits}
 
-model = RoBERTCNN(MODEL_NAME, num_classes=20)
+model = RoBERTCNN(MODEL_NAME, num_classes=21)
 model.to(DEVICE)
 
 # ===== Metrics =====

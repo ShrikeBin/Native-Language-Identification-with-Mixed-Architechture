@@ -20,8 +20,8 @@ NUM_EPOCHS = 4
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # ===== Load full data =====
-train_df = pd.read_parquet("../../../../DATA/language/baremetal/reducedMajor/train.parquet")
-test_df = pd.read_parquet("../../../../DATA/language/test.parquet")
+train_df = pd.read_parquet("../../DATA/baremetal/reducedMajor/train.parquet")
+test_df = pd.read_parquet("../../DATA/OLD/test.parquet")
 
 # ==== Map labels ====
 label_map = {
