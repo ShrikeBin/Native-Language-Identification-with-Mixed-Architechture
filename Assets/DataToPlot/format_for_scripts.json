@@ -1,0 +1,17 @@
+{
+  "log_history": 
+  [
+    {
+      "epoch": 1.0,
+      "eval_loss": 10,
+      "eval_mse": 1,
+      "eval_accuracy": 0.29
+    },
+    {
+      "epoch": 2.0,
+      "eval_loss": 8,
+      "eval_mse": 0.6,
+      "eval_accuracy": 0.59
+    }
+  ]
+}
