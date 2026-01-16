@@ -19,8 +19,7 @@ NUM_EPOCHS = 5
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # ===== Load full data =====
-train_df = pd.read_csv("../../DATA/OLD/deletedUnknown/train_deduped.csv")
-# test_df = pd.read_csv("../../DATA/OLD/deletedUnknown/test_deduped.csv")
+train_df = pd.read_parquet("../../DATA/OLD/deletedUnknown/train_balanced.parquet")
 test_df = pd.read_parquet("../../DATA/OLD/validate.parquet")
 
 # ==== Map labels ====
