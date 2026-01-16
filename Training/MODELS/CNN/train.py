@@ -19,8 +19,8 @@ NUM_EPOCHS = 5
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # ===== Load full data =====
-train_df = pd.read_csv("../../DATA/NEW/train_balanced.csv")
-test_df = pd.read_csv("../../DATA/NEW/test.csv")
+train_df = pd.read_csv("../../DATA/OLD/deletedUnknown/train_deduped.csv")
+test_df = pd.read_csv("../../DATA/OLD/deletedUnknown/test_deduped.csv")
 
 # ==== Map labels ====
 label_map = {0: "English", 1: "German", 2: "Nordic", 3: "French", 4: "Italian", 5: "Portuguese", 6: "Spanish", 7: "Russian", 8: "Polish", 9: "Other Slavic", 10: "Turkic", 11: "Chinese", 12: "Vietnamese", 13: "Koreanic", 14: "Japonic", 15: "Tai", 16: "Indonesian", 17: "Uralic", 18: "Arabic", 19: "Indo-Iranian"}
