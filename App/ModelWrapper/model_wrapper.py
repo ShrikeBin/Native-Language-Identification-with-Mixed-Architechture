@@ -22,58 +22,41 @@ model_maps = {
 
 # ===== Trait Label Maps =====
 label_maps = {
-    'gender': {0: "female", 1: "male"},
-    'political': {0: "left", 1: "center", 2: "right"},
-    'mbti': {0: "ISTJ", 1: "ISFJ", 2: "INFJ", 3: "INTJ", 4: "ISTP", 5: "ISFP", 6: "INFP", 7: "INTP", 8: "ESTP", 9: "ESFP", 10: "ENFP", 11: "ENTP", 12: "ESTJ", 13: "ESFJ", 14: "ENFJ", 15: "ENTJ"},
     'language': {0: "English", 1: "German", 2: "Nordic", 3: "French", 4: "Italian", 5: "Portuguese", 6: "Spanish", 7: "Russian", 8: "Polish", 9: "Other Slavic", 10: "Turkic", 11: "Chinese", 12: "Vietnamese", 13: "Koreanic", 14: "Japonic", 15: "Tai", 16: "Indonesian", 17: "Uralic", 18: "Arabic", 19: "Indo-Iranian"},
 }
 
 # ===== Model Wrapper =====
 class Model:
-    def __init__(self, trait_name, head_type, model='DistilBERT', train='Full'):
+    def __init__(self, head_type, model='DistilBERT', train='Full'):
 
         # === Basic Config ===
-        self.name = f"{trait_name} ({model} {head_type} {train})"
+        self.name = f"({model} {head_type} {train})"
         self.type = head_type
         self.tokenizer = AutoTokenizer.from_pretrained(model_maps[model])
-        self.label_map = label_maps.get(trait_name, None)
+        self.label_map = label_maps.get('language', None)
 
         # === Model Base ===
-        path = f"Training/MODELS/{trait_name}/{model}{head_type}{train}/model"
+        path = f"Training/MODELS/{model}{head_type}{train}/model"
+        print(f"{self.name} loading model from {path}")
         
         if head_type == 'Classification': # Transformers Classifiers
             self.model = AutoModelForSequenceClassification.from_pretrained(path, num_labels=len(self.label_map))
-        else: # Custom Head
+        else: # Custom Heads
             head_module_path = f"App.ModelWrapper.custom_heads.{head_type}"
             match head_type:
-                case 'Regression':
-                    head_module = importlib.import_module(head_module_path)
-                    CustomRegression = getattr(head_module, "CustomRegression")
-                    self.model = CustomRegression(model_maps[model])
                 case 'MixedCNN':
                     head_module = importlib.import_module(f"{head_module_path}.{model}")
                     MixedClassifier = getattr(head_module, "MixedClassifier")
-                    model_path = f"Training/MODELS/{trait_name}/{model}ClassificationFull/model"
-                    cnn_path = f"Training/MODELS/{trait_name}/{model}{head_type}{train}/CNN/model.safetensors"
+                    model_path = f"Training/MODELS/{model}ClassificationFull/model"
+                    cnn_path = f"Training/MODELS/{model}{head_type}{train}/CNN/model.safetensors"
                     self.model = MixedClassifier(model_path, cnn_path, num_classes=len(self.label_map))
                 case 'CNN':
                     head_module = importlib.import_module(head_module_path)
                     CustomCNN = getattr(head_module, "CustomCNN")
                     self.model = CustomCNN(num_classes=len(self.label_map))
-                    self.name = f"{trait_name} ({head_type})"
+                    self.name = f"({head_type})"
                     self.tokenizer = AutoTokenizer.from_pretrained("roberta-base")
-                    path = f"Training/MODELS/{trait_name}/{head_type}/model"
-                case 'TEST':
-                    # THIS HERE IS TEMPORARY FOR TESTING CUSTOM DATESETS
-                    # TODO: REMOVE LATER, or INTEGRATE PROPERLY
-                    head_module = importlib.import_module(f"App.ModelWrapper.custom_heads.CNN")
-                    CustomCNN = getattr(head_module, "CustomCNN")
-                    self.model = CustomCNN(num_classes=len(self.label_map))
-                    self.name = f"{trait_name} ({head_type})"
-                    self.tokenizer = AutoTokenizer.from_pretrained("roberta-base")
-                    path = f"Training/MODELS/language/AlternativeDataTest/CNNNotReducedNoNer/model"
-
-
+                    path = f"Training/MODELS/{head_type}/model"
                 case _:
                     raise KeyError(f"Unknown head type: {head_type}")
             

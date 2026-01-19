@@ -20,8 +20,8 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 BATCH_SIZE = 8
 
 # ===== Load full data =====
-train_df = pd.read_csv("../../DATA/NEW/train_balanced.csv")
-test_df = pd.read_csv("../../DATA/NEW/test.csv")
+train_df = pd.read_parquet("../../DATA/OLD/deletedUnknown/train_balanced.parquet")
+test_df = pd.read_parquet("../../DATA/OLD/validate.parquet")
 
 # ==== Map labels ====
 label_map = {0: "English", 1: "German", 2: "Nordic", 3: "French", 4: "Italian", 5: "Portuguese", 6: "Spanish", 7: "Russian", 8: "Polish", 9: "Other Slavic", 10: "Turkic", 11: "Chinese", 12: "Vietnamese", 13: "Koreanic", 14: "Japonic", 15: "Tai", 16: "Indonesian", 17: "Uralic", 18: "Arabic", 19: "Indo-Iranian"}
@@ -46,7 +46,7 @@ test_dataset = test_dataset.rename_column(LABEL_COL, "labels")
 # ===== Model =====
 model = AutoModelForSequenceClassification.from_pretrained(
     MODEL_NAME,
-    num_labels=21
+    num_labels=len(label_map)
 )
 
 # ===== LoRA Config =====

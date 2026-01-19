@@ -48,7 +48,7 @@ test_dataset = test_dataset.rename_column(LABEL_COL, "labels")
 # ===== Model =====
 from cnn import CustomCNN
 
-model = CustomCNN(num_classes=20)
+model = CustomCNN(num_classes=len(label_map))
 model.to(DEVICE)
 
 # ===== Params ====
