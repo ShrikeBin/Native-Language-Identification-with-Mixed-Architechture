@@ -7,6 +7,8 @@ from transformers import (
 )
 from peft import PeftModel
 import importlib
+from pathlib import Path
+import json
 
 # ===== Device =====
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -21,9 +23,13 @@ model_maps = {
 }
 
 # ===== Trait Label Maps =====
-label_maps = {
-    'language': {0: "English", 1: "German", 2: "Nordic", 3: "French", 4: "Italian", 5: "Portuguese", 6: "Spanish", 7: "Russian", 8: "Polish", 9: "Other Slavic", 10: "Turkic", 11: "Chinese", 12: "Vietnamese", 13: "Koreanic", 14: "Japonic", 15: "Tai", 16: "Indonesian", 17: "Uralic", 18: "Arabic", 19: "Indo-Iranian"},
-}
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+CONFIG_PATH = PROJECT_ROOT / "Training/MODELS/train_config.json"
+
+with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+    cfg = json.load(f)
+
+LABEL_MAP = {int(k): v for k, v in cfg["label_map"].items()}
 
 # ===== Model Wrapper =====
 class Model:
@@ -33,7 +39,7 @@ class Model:
         self.name = f"({model} {head_type} {train})"
         self.type = head_type
         self.tokenizer = AutoTokenizer.from_pretrained(model_maps[model])
-        self.label_map = label_maps.get('language', None)
+        self.label_map = LABEL_MAP
 
         # === Model Base ===
         path = f"Training/MODELS/{model}{head_type}{train}/model"
