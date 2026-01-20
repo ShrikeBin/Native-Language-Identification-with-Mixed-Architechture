@@ -20,11 +20,30 @@ NUM_EPOCHS = 3
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # ===== Load full data =====
-train_df = pd.read_parquet("../../DATA/OLD/deletedUnknown/train_balanced.parquet")
-test_df = pd.read_parquet("../../DATA/OLD/validate.parquet")
+import json
+from pathlib import Path
 
-# ==== Map labels ====
-label_map = {0: "English", 1: "German", 2: "Nordic", 3: "French", 4: "Italian", 5: "Portuguese", 6: "Spanish", 7: "Russian", 8: "Polish", 9: "Other Slavic", 10: "Turkic", 11: "Chinese", 12: "Vietnamese", 13: "Koreanic", 14: "Japonic", 15: "Tai", 16: "Indonesian", 17: "Uralic", 18: "Arabic", 19: "Indo-Iranian"}
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
+CONFIG_PATH = Path(__file__).resolve().parent.parent / "train_config.json"
+
+def load_df(path: str) -> pd.DataFrame:
+    path = PROJECT_ROOT / path 
+    print(f"Loading data from {path}...")
+
+    if path.suffix == ".parquet":
+        return pd.read_parquet(path)
+    if path.suffix == ".csv":
+        return pd.read_csv(path)
+
+    raise ValueError(f"Unsupported data format: {path.suffix}")
+
+with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+    cfg = json.load(f)
+
+train_df = load_df(cfg["train_path"])
+test_df = load_df(cfg["test_path"])
+
+label_map = {int(k): v for k, v in cfg["label_map"].items()}
 label_map = {v: int(k) for k, v in label_map.items()}
 train_df[LABEL_COL] = train_df[LABEL_COL].map(label_map).astype(int)
 test_df[LABEL_COL] = test_df[LABEL_COL].map(label_map).astype(int)

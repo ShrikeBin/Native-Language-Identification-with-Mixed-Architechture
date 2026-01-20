@@ -105,7 +105,7 @@ Training/
 
 ```
 MODELS/
-├── AlternativeDataTest/                 # Temporal folder for testing new datasets
+├── AlternativeDataTest/                 # [MARKED FOR REMOVAL] Temporal folder for testing new datasets 
 ├── CNN/                                 # Raw CNN on RoBERTa tokenizer embeddings
 ├── DeBERTaClassificationLoRA/           # LoRA adaptation
 ├── DistilBERTClassificationBaseline/    # Only final classification layer trained
@@ -126,15 +126,9 @@ MODELS/
 
 ```
 DATA/
-├── [PLACEHOLDER]
+├── NEW                         # Dataset recreated using Lang8 and italki without the unknown origin part from other project repository
 │   └── ... 
-├── [PLACEHOLDER]
-│   └── ... 
-├── [PLACEHOLDER]
-│   └── ... 
-├── [PLACEHOLDER]
-│   └── ... 
-├── [PLACEHOLDER]
+├── OLD                         # Original Datasets used in the project
 │   └── ... 
 └── README.md                   # Detailed description of datasets and work regarding them
 ```

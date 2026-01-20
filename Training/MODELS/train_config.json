@@ -1,7 +1,6 @@
 {
-  "train_path": "Training/DATA/OLD/deletedUnknown/train_balanced.parquet",
-  "test_path": "Training/DATA/OLD/deletedUnknown/test_balanced.parquet",
-  "validate_path": "Training/DATA/OLD/validate.parquet",
+  "train_path": "Training/DATA/NEW/notCombined/train_no_slavic.parquet",
+  "test_path": "Training/DATA/NEW/notCombined/test_no_slavic.parquet",
   "label_map": {
     "0": "English",
     "1": "German",
