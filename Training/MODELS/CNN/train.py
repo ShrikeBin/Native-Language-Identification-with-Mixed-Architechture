@@ -42,8 +42,7 @@ with open(CONFIG_PATH, "r", encoding="utf-8") as f:
 train_df = load_df(cfg["train_path"])
 test_df = load_df(cfg["test_path"])
 
-label_map = {int(k): v for k, v in cfg["label_map"].items()}
-label_map = {v: int(k) for k, v in label_map.items()}
+label_map = {v: int(k) for k, v in cfg["label_map"].items()}
 train_df[LABEL_COL] = train_df[LABEL_COL].map(label_map).astype(int)
 test_df[LABEL_COL] = test_df[LABEL_COL].map(label_map).astype(int)
 
