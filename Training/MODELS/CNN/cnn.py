@@ -15,13 +15,13 @@ class CustomCNN(nn.Module):
         # self.embed = nn.Embedding(50265, 512)
 
         self.conv = nn.Sequential(
-            nn.Conv1d(hidden_size, 512, 3), nn.GELU(), nn.Dropout(dropout),
-            nn.Conv1d(512, 1024, 3), nn.GELU(), nn.Dropout(dropout)
+            nn.Conv1d(hidden_size, 512, 1), nn.GELU(), nn.Dropout(dropout),
+            nn.Conv1d(512, 2048, 3), nn.GELU(), nn.Dropout(dropout)
         )
 
         self.pooler = nn.AdaptiveMaxPool1d(1)
 
-        self.classifier = nn.Linear(1024, num_classes)
+        self.classifier = nn.Linear(2048, num_classes)
 
     def forward(self, input_ids, attention_mask, labels=None):
         x = self.embed(input_ids).transpose(1, 2)
@@ -30,7 +30,7 @@ class CustomCNN(nn.Module):
         logits = self.classifier(x)
 
         loss = None
-        if labels != None:
+        if labels is not None:
             loss = nn.CrossEntropyLoss()(logits, labels)
         
         return {'loss': loss, 'logits': logits}

@@ -12,7 +12,7 @@ from evaluate import load
 # ===== CONFIG =====
 MODEL_NAME = "roberta-base"
 TEXT_COL = "text"
-LABEL_COL = "language"
+LABEL_COL = "native_language"
 MAX_LEN = 256
 BATCH_SIZE = 128
 NUM_EPOCHS = 5
@@ -114,7 +114,8 @@ training_args = TrainingArguments(
     logging_steps=5000,
     load_best_model_at_end=True,
     metric_for_best_model="accuracy",
-    fp16=torch.cuda.is_available(),
+    # fp16=torch.cuda.is_available(),
+    fp16=False,
     gradient_accumulation_steps=1,
     report_to="none",
 )
