@@ -1,6 +1,6 @@
 {
-  "train_path": "Training/DATA/Lang-8/stehwien_pado/train.parquet",
-  "test_path": "Training/DATA/Lang-8/stehwien_pado/test.parquet",
+  "train_path": "Training/DATA/Lang-8/no_language_filtering/train.parquet",
+  "test_path": "Training/DATA/Lang-8/no_language_filtering/test.parquet",
   "label_map": {
       "0": "Japanese",
       "1": "Traditional Chinese",
@@ -13,10 +13,10 @@
       "8": "Polish",
       "9": "Arabic",
       "10": "Thai",
-      "11": "Portuguese(Brazil)",
-      "12": "English",
-      "13": "Indonesian",
-      "14": "French",
+      "11": "English",
+      "12": "French",
+      "13": "Portuguese(Brazil)",
+      "14": "Indonesian",
       "15": "Italian",
       "16": "German"
   }
